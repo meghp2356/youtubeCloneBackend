@@ -15,4 +15,21 @@
 */
 
 import  connectDB from "./connection/db.js";
+import app from "./app.js";
+
 connectDB()
+.then(()=>{
+
+    app.on('errror',(err)=>{
+        console.log('error at confic apps',err);
+        throw err;
+    });
+
+    app.listen( process.env.PORT || 8000 , ()=>{
+        console.log(` server is running at port localhost://${process.env.PORT||8000}`);
+    }); 
+
+})
+.catch(err => {
+    console.log("Mongo db connection failed !",err);
+})
