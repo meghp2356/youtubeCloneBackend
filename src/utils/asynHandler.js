@@ -1,4 +1,4 @@
-const asyncHander = (fun)=> async (req,res,next)=>{
+const asyncHander = (fun)=> (async (req,res,next)=>{
     try {
         await fun(req,res,next);
     } catch (error) {
@@ -7,6 +7,6 @@ const asyncHander = (fun)=> async (req,res,next)=>{
             message : error.message
         });
     }
-}
+})
 
 export {asyncHander} ;
