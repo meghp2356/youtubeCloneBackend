@@ -56,12 +56,12 @@ userSchema.pre('save', async function(next){
   next()
 })
 
-userSchema.method.isPasswordCorrect=async function(password){
+userSchema.methods.isPasswordCorrect=async function(password){
   return await bcrypt.compare(password,this.password)
 }
 
-userSchema.method.genrateRefreshToken=async function(){
-  return jwt.sign(
+userSchema.methods.genrateRefreshToken=function(){
+  return  jwt.sign(
     {
        _id:this._id,
        username:this.username,
@@ -75,13 +75,10 @@ userSchema.method.genrateRefreshToken=async function(){
   )
 }
 
-userSchema.method.genrateAccessToken=function(){
+userSchema.methods.genrateAccessToken=function(){
   return jwt.sign(
     {
        _id:this._id,
-       username:this.username,
-       email:this.email,
-       fullname : this.fullname
     },
     process.env.ACCESS_TOKEN_SECRET,
     {
