@@ -7,6 +7,7 @@ import {
   updateAvatar,
   getChannelDetailes,
   userHistory,
+  getUser
 } from "../controller/user.controller.js";
 import { upload } from "../middlewares/multer.middleware.js";
 import { verifyJwt } from "../middlewares/auth.middleware.js";
@@ -41,4 +42,5 @@ routes.route("/channel:username").get(verifyJwt, getChannelDetailes);
 
 routes.route("/history").get(verifyJwt, userHistory);
 
+routes.route("/get").get(verifyJwt,getUser)
 export default routes;

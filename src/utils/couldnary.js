@@ -15,8 +15,8 @@ const uplodeCloundnary = async (filepath) => {
         resource_type: "auto",
       });
       
-      fs.unlinkSync(filepath);
       console.log("file url is", file.url);
+      fs.unlinkSync(filepath);
       return file;
     }
 

@@ -12,7 +12,11 @@ app.use(express.static("public"));
 app.use(cookieParser());
 
 import userRoutes from "./routes/user.routes.js";
+import subcriptionRoutes from './routes/subcription.routes.js';
+import videoRoutes from './routes/video.routes.js'
 
 app.use('/api/v1/users',userRoutes)
+app.use('/api/v1/subcription',subcriptionRoutes )
+app.use('/api/v1/video',videoRoutes)
 
 export default app;

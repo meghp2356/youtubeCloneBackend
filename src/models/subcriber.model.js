@@ -16,4 +16,4 @@ const subcrpitionSchema = mongoose.Schema(
   }
 );
 
-export const subscriber = mongoose.model('Subcrpition',subcrpitionSchema);
+export const Subscriber = mongoose.model('Subscriber',subcrpitionSchema);
