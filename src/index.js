@@ -10,7 +10,7 @@
     require('dotenv').confic({
         path:path:'./.env'
     });
-}
+}   
 
 */
 
@@ -31,7 +31,7 @@ connectDB()
     });
 
     app.listen( process.env.PORT || 8000 , ()=>{
-        console.log(` server is running at port http://localhost:${process.env.PORT||8000}`);
+        console.log(`server is running at port http://localhost:${process.env.PORT||8000}`);
     }); 
 
 })

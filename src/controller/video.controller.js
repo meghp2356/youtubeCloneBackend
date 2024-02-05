@@ -2,6 +2,7 @@ import { asyncHander } from "../utils/asynHandler.js";
 import { ApiError } from "../utils/apiError.js";
 import { ApiRespones } from "../utils/apiRespones.js";
 import { Video } from '../models/video.model.js';
+import { User } from "../models/user.model.js";
 import uplodeCloundnary from '../utils/couldnary.js';
 import mongoose from "mongoose";
 
@@ -80,7 +81,11 @@ const getVideoById = asyncHander(async(req,res)=>{
       
     ])
 
-    if(!video || video.length <=0) throw new ApiError('video does not exits')
+    if(!video || video.length <=0) throw new ApiError(400,'video does not exits')
+
+    await User.findByIdAndUpdate(req.user._id,{
+            $push:{ watchHistory:videoId}    
+    })
 
     res.status(200)
        .json(new ApiRespones(200,'video fetch with sucess', video))
@@ -122,7 +127,8 @@ const updateVideoDetails = asyncHander(async(req,res)=>{
         }
     )
 
-    res.json(video)
+    res.status(200)
+       .json(new ApiRespones(200,'successfully fetched',video))
 })
 
 const deleteVideo = asyncHander(async(req,res)=>{
@@ -134,16 +140,17 @@ const deleteVideo = asyncHander(async(req,res)=>{
 
     if(!check) throw new ApiError(400,'no such a video exits')
 
-    if(!check.owner.equals(req.user._id)) throw ApiError(400,'unauthorized delete ')
+    if(!check.owner.equals(req.user._id)) throw new ApiError(400,'unauthorized delete ')
 
-    await Video.deleteOne(videoId)
+    await Video.deleteOne({_id:videoId})
 
     res.status(200)
-       .ApiRespones(200,'video deleted')
+       .json(new ApiRespones(200,'video deleted'))
 })
 
 export{
     publishVideo,
     getVideoById,
-    updateVideoDetails
+    updateVideoDetails,
+    deleteVideo
 }

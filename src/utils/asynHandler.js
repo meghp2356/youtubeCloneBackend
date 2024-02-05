@@ -2,9 +2,12 @@ const asyncHander = (fun)=> (async (req,res,next)=>{
     try {
         await fun(req,res,next);
     } catch (error) {
-        res.status(error || 500).json({
+
+        console.log(error.stack);
+        
+        res.status(error.statusCoder || 500).json({
             success : false,
-            message : error.message
+            message : error.message 
         });
     }
 })
