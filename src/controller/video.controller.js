@@ -6,6 +6,8 @@ import { User } from "../models/user.model.js";
 import uplodeCloundnary from '../utils/couldnary.js';
 import mongoose from "mongoose";
 
+//improve watch history one
+
 const publishVideo = asyncHander(async(req,res)=>{
     const {title , descprition} = req.body;
 
@@ -55,7 +57,7 @@ const getVideoById = asyncHander(async(req,res)=>{
         },
         {
             $lookup:{
-                from:'users',
+                from:'users', 
                 foreignField:'_id',
                 localField:'owner',
                 as:"owner",
@@ -140,7 +142,7 @@ const deleteVideo = asyncHander(async(req,res)=>{
 
     if(!check) throw new ApiError(400,'no such a video exits')
 
-    if(!check.owner.equals(req.user._id)) throw new ApiError(400,'unauthorized delete ')
+    if(!check.owner.equals(req.user._id)) throw new ApiError(401,'unauthorized delete ')
 
     await Video.deleteOne({_id:videoId})
 
@@ -148,9 +150,36 @@ const deleteVideo = asyncHander(async(req,res)=>{
        .json(new ApiRespones(200,'video deleted'))
 })
 
+const togglePublish = asyncHander(async (req,res)=>{
+    const {VideoId} = req.params;
+    console.log(VideoId);
+
+    const video = await Video.findById(VideoId);
+
+    if(!video) throw new ApiError(400,'video does not exists');
+
+    if(!video.owner.equals(req.user._id)) throw new ApiError(402,'user is unauthorized to modeify the video');
+
+    video.isPublic=!video.isPublic
+    await video.save({validateBeforeSave:false});
+
+    // let flag = !video.isPublic
+
+    // const u = await Video.updateOne({_id:VideoId},{
+    //     $set:{
+    //         isPublic : flag
+    //     }
+    // })
+
+    return res.status(200)
+              .json(new ApiRespones(200,'publish is toggle with sucess',video))
+
+})
+
 export{
     publishVideo,
     getVideoById,
     updateVideoDetails,
-    deleteVideo
+    deleteVideo,
+    togglePublish
 }

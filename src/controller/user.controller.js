@@ -245,6 +245,7 @@ const updateAvatar = asyncHander(async (req, res) => {
   //     avatar:avatar.url
   //   }
   // })
+  
   console.log(req.user);
 
   req.user.avatar = avatar.url;
